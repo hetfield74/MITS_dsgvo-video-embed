@@ -15,8 +15,8 @@
  * --------------------------------------------------------------
  */
 
-define('MODULE_MITS_DSGVO_VIDEO_EMBED_TITLE', 'DSGVO Video-Embed 1.0 <span style="white-space:nowrap;">&copy; by <span style="padding:2px;background:#ffe;color:#6a9;font-weight:bold;">Hetfield (MerZ IT-SerVice)</span></span> and &copy; 2018 Arndt von Lucadou');
-define('MODULE_MITS_DSGVO_VIDEO_EMBED_DESCRIPTION', '
+define('MODULE_MITS_DSGVO_VIDEO_EMBED_TEXT_TITLE', 'DSGVO Video-Embed 1.0 <span style="white-space:nowrap;">&copy; by <span style="padding:2px;background:#ffe;color:#6a9;font-weight:bold;">Hetfield (MerZ IT-SerVice)</span></span> and &copy; 2018 Arndt von Lucadou');
+define('MODULE_MITS_DSGVO_VIDEO_EMBED_TEXT_DESCRIPTION', '
     <a href="https://www.merz-it-service.de/" target="_blank">
         <img src="'.DIR_WS_EXTERNAL.'mits_dsgvo-video-embed/images/merz-it-service.png" border="0" alt="" style="display:block;max-width:100%;height:auto;" />
     </a><br />
