@@ -22,14 +22,23 @@ class mits_dsgvo_video_embed {
 
   function __construct() {
     $this->code = 'mits_dsgvo_video_embed';
-    $this->title = constant('MODULE_' . strtoupper($this->code) . '_TEXT_TITLE');
-    $this->description = constant('MODULE_' . strtoupper($this->code) . '_TEXT_DESCRIPTION');
-    $this->sort_order = defined('MODULE_' . strtoupper($this->code) . '_SORT_ORDER') ? constant('MODULE_' . strtoupper($this->code) . '_SORT_ORDER') : 0;
-    $this->enabled = ((constant('MODULE_' . strtoupper($this->code) . '_STATUS') == 'true') ? true : false);
+    $this->name = 'MODULE_' . strtoupper($this->code);
+    $this->version = '1.01';
+    $this->title = constant($this->name . '_TITLE') . ' - v' . $this->version;
+    $this->description = constant($this->name . '_DESCRIPTION');
+    $this->sort_order = defined($this->name . '_SORT_ORDER') ? constant($this->name . '_SORT_ORDER') : 0;
+    $this->enabled = defined($this->name . '_STATUS') && constant($this->name . '_STATUS') == 'true' ? true : false;
+
+    $version_query = xtc_db_query("SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '" . $this->name . "_VERSION'");
+    if (xtc_db_num_rows($version_query)) {
+      xtc_db_query("UPDATE " . TABLE_CONFIGURATION . " SET configuration_value = '" . $this->version . "' WHERE configuration_key = '" . $this->name . "_VERSION'");
+    } elseif (defined($this->name . '_STATUS')) {
+      xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value, configuration_group_id, sort_order, set_function, date_added) VALUES ('" . $this->name . "_VERSION', '" . $this->version . "', 6, 99, NULL, now())");
+    }
   }
 
   function process($file) {
-    //do nothing
+    // nothing to do
   }
 
   function display() {
@@ -41,27 +50,28 @@ class mits_dsgvo_video_embed {
 
   function check() {
     if (!isset($this->_check)) {
-      $check_query = xtc_db_query("SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = 'MODULE_MITS_DSGVO_VIDEO_EMBED_STATUS'");
+      $check_query = xtc_db_query("SELECT configuration_value FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = '" . $this->name . "_STATUS'");
       $this->_check = xtc_db_num_rows($check_query);
     }
     return $this->_check;
   }
 
   function install() {
-    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value,  configuration_group_id, sort_order, set_function, date_added) VALUES ('MODULE_MITS_DSGVO_VIDEO_EMBED_STATUS', 'true',  '6', '1', 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
-    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value,  configuration_group_id, sort_order, set_function, date_added) VALUES ('MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_JS', 'true',  '6', '1', 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
-    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value,  configuration_group_id, sort_order, set_function, date_added) VALUES ('MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_CSS', 'true',  '6', '1', 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
+    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value, configuration_group_id, sort_order, set_function, date_added) VALUES ('" . $this->name . "_STATUS', 'true', 6, 1, 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
+    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value, configuration_group_id, sort_order, set_function, date_added) VALUES ('" . $this->name . "_USE_MIN_JS', 'true', 6, 1, 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
+    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value, configuration_group_id, sort_order, set_function, date_added) VALUES ('" . $this->name . "_USE_MIN_CSS', 'true', 6, 1, 'xtc_cfg_select_option(array(\'true\', \'false\'), ', now())");
+    xtc_db_query("INSERT INTO " . TABLE_CONFIGURATION . " (configuration_key, configuration_value, configuration_group_id, sort_order, set_function, date_added) VALUES ('" . $this->name . "_VERSION', '" . $this->version . "', 6, 99, NULL, now())");
   }
 
   function remove() {
-    xtc_db_query("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key LIKE 'MODULE_MITS_DSGVO_VIDEO_EMBED_%'");
+    xtc_db_query("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key LIKE '" . $this->name . "_%'");
   }
 
   function keys() {
     return array(
-      'MODULE_MITS_DSGVO_VIDEO_EMBED_STATUS',
-      'MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_JS',
-      'MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_CSS',
+      $this->name . '_STATUS',
+      $this->name . '_USE_MIN_JS',
+      $this->name . '_USE_MIN_CSS',
     );
   }
 }

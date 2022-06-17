@@ -17,16 +17,20 @@
 
 if (defined('MODULE_MITS_DSGVO_VIDEO_EMBED_STATUS') && MODULE_MITS_DSGVO_VIDEO_EMBED_STATUS == 'true') {
 
-  switch ($_SESSION['language_code']) {
-    case 'de':
-      $mits_dsgvo_video_embed_lang = 'de';
-      break;
-    case 'en':
-      $mits_dsgvo_video_embed_lang = 'en';
-      break;
-    default:
-      $mits_dsgvo_video_embed_lang = 'de';
-      break;
+  if (isset($_SESSION['language_code'])) {
+    switch ($_SESSION['language_code']) {
+      case 'de':
+        $mits_dsgvo_video_embed_lang = 'de';
+        break;
+      case 'en':
+        $mits_dsgvo_video_embed_lang = 'en';
+        break;
+      default:
+        $mits_dsgvo_video_embed_lang = 'en';
+        break;
+    }
+  } else {
+    $mits_dsgvo_video_embed_lang = 'en';
   }
 
   if (defined('MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_CSS') && MODULE_MITS_DSGVO_VIDEO_EMBED_USE_MIN_CSS == 'true') {
